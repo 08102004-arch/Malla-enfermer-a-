@@ -2,24 +2,36 @@ body {
   font-family: Arial, sans-serif;
   background-color: #e0f7fa;
   padding: 20px;
+  margin: 0;
 }
 
-h1 {
+h1, p {
+  text-align: center;
   color: #0277bd;
-  text-align: center;
 }
 
-p {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #555;
+#contenedor-malla {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
-.malla {
+.semestre {
+  border-top: 3px solid #0288d1;
+  padding-top: 10px;
+}
+
+.semestre h2 {
+  color: #01579b;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.fila {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  justify-content: center;
 }
 
 .ramo {
