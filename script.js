@@ -1,4 +1,3 @@
-// Estructura por semestre
 const semestres = [
   {
     nombre: "Primer Año - I Semestre",
@@ -19,7 +18,7 @@ const semestres = [
       { nombre: "Bioestadística", requisitos: ["Matemáticas"] },
       { nombre: "Socioantropología e interculturalidad", requisitos: [] },
       { nombre: "Enfermería basada en evidencia", requisitos: [] },
-      { nombre: "Electivo desarrollo pensamiento", requisitos: [] },
+      { nombre: "Electivo de desarrollo del pensamiento", requisitos: [] },
     ],
   },
   {
@@ -29,7 +28,16 @@ const semestres = [
       { nombre: "Psicología general y del desarrollo", requisitos: [] },
       { nombre: "Bioquímica", requisitos: ["Química general y orgánica"] },
       { nombre: "Enfermería en salud pública", requisitos: [] },
-      { nombre: "Gestión del cuidado en Enfermería", requisitos: ["Educación de enfermería", "Microbiología y parasitología", "Enfermería basada en evidencia", "Química general y orgánica", "Anatomía general"] },
+      {
+        nombre: "Gestión del cuidado en Enfermería",
+        requisitos: [
+          "Educación de enfermería",
+          "Microbiología y parasitología",
+          "Enfermería basada en evidencia",
+          "Química general y orgánica",
+          "Anatomía general"
+        ]
+      },
       { nombre: "Electivo de comunicación", requisitos: [] },
     ],
   },
@@ -40,19 +48,97 @@ const semestres = [
       { nombre: "Farmacología", requisitos: ["Fisiología general", "Bioquímica"] },
       { nombre: "Gestión en servicios de salud", requisitos: ["Enfermería en salud pública"] },
       { nombre: "Herramientas informáticas", requisitos: ["Enfermería en salud pública"] },
-      { nombre: "Integrado de ciclo inicial", requisitos: ["Educación de enfermería", "Socioantropología e interculturalidad", "Bioquímica", "Fisiología general", "Enfermería en salud pública"] },
+      {
+        nombre: "Integrado de ciclo inicial",
+        requisitos: [
+          "Educación de enfermería",
+          "Socioantropología e interculturalidad",
+          "Bioquímica",
+          "Fisiología general",
+          "Enfermería en salud pública"
+        ]
+      },
     ],
   },
-  // Agrega los años 3, 4 y 5 aquí si lo deseas ahora o en la próxima entrega
+  {
+    nombre: "Tercer Año - I Semestre",
+    ramos: [
+      { nombre: "Gestión del cuidado de la mujer", requisitos: [] },
+      { nombre: "Calidad en la gestión del cuidado", requisitos: ["Gestión en servicios de salud"] },
+      {
+        nombre: "Gestión del cuidado adulto y adulto mayor",
+        requisitos: [
+          "Farmacología",
+          "Fisiopatología",
+          "Gestión del cuidado en Enfermería",
+          "Integrado de ciclo inicial"
+        ]
+      },
+      {
+        nombre: "Gestión del cuidado en comunidades I",
+        requisitos: [
+          "Farmacología",
+          "Fisiopatología",
+          "Gestión del cuidado en Enfermería",
+          "Integrado de ciclo inicial"
+        ]
+      },
+      { nombre: "Enfermería adulto mayor", requisitos: [] },
+      { nombre: "Electivo de Ética", requisitos: [] },
+    ],
+  },
+  {
+    nombre: "Tercer Año - II Semestre",
+    ramos: [
+      { nombre: "Bioética", requisitos: ["Electivo de Ética"] },
+      {
+        nombre: "Metodología de la investigación",
+        requisitos: [
+          "Bioestadística",
+          "Herramientas informáticas",
+          "Enfermería basada en evidencia"
+        ]
+      },
+      { nombre: "Gestión del cuidado en salud mental", requisitos: [] },
+      { nombre: "Cuidados paliativos y procesos de morir", requisitos: ["Enfermería adulto mayor"] },
+    ],
+  },
+  {
+    nombre: "Cuarto Año - I Semestre",
+    ramos: [
+      { nombre: "Proyecto de la investigación I", requisitos: ["Metodología de la investigación"] },
+      { nombre: "Gestión del cuidado en urgencias", requisitos: ["Gestión del cuidado adulto y adulto mayor"] },
+      { nombre: "Gestión del cuidado del niño y adolescente", requisitos: ["Gestión del cuidado adulto y adulto mayor"] },
+      { nombre: "Gestión del cuidado en comunidades II", requisitos: ["Gestión del cuidado en comunidades I"] },
+      { nombre: "Electivo de desarrollo personal", requisitos: [] },
+    ],
+  },
+  {
+    nombre: "Cuarto Año - II Semestre",
+    ramos: [
+      { nombre: "Proyecto de la investigación II", requisitos: ["Proyecto de la investigación I"] },
+      { nombre: "Integrado de ciclo intermedio", requisitos: ["TODOS"] },
+      { nombre: "Electivo de responsabilidad social", requisitos: [] },
+    ],
+  },
+  {
+    nombre: "Quinto Año - I y II Semestre",
+    ramos: [
+      { nombre: "Práctica profesional I", requisitos: ["TODOS"] },
+      { nombre: "Práctica profesional II", requisitos: ["TODOS"] },
+      { nombre: "Seminario de integración de enfermería", requisitos: ["TODOS"] },
+    ],
+  },
 ];
 
+// Generar visual
 const contenedor = document.getElementById("contenedor-malla");
 const estado = {};
 
-// Crea los elementos visuales por semestre
 semestres.forEach(sem => {
   const bloque = document.createElement("div");
   bloque.className = "semestre";
+
   const titulo = document.createElement("h2");
   titulo.textContent = sem.nombre;
 
@@ -95,8 +181,16 @@ function actualizar() {
   semestres.forEach(sem => {
     sem.ramos.forEach(ramo => {
       if (estado[ramo.nombre]) return;
-
       if (!ramo.requisitos || ramo.requisitos.length === 0) return;
+
+      if (ramo.requisitos.includes("TODOS")) {
+        const aprobados = Object.values(estado).every(e => e);
+        if (aprobados) {
+          const div = [...document.querySelectorAll(".ramo")].find(d => d.textContent.includes(ramo.nombre));
+          if (div) div.classList.add("activo");
+        }
+        return;
+      }
 
       const habilitado = ramo.requisitos.every(req => estado[req]);
       if (habilitado) {
